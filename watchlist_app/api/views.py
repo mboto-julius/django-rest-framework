@@ -1,15 +1,15 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from watchlist_app.models import WatchList, StreamPlatform
-from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer
+from watchlist_app.models import WatchList, StreamPlatform, Review
+from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 
 
 class StreamPlatformList(APIView):
     
     def get(self, request):
         platforms = StreamPlatform.objects.all()
-        serializer = StreamPlatformSerializer(platforms, many=True, context={'request': request})
+        serializer = StreamPlatformSerializer(platforms, many=True)
         return Response(serializer.data)
     
     def post(self, request):
@@ -30,7 +30,7 @@ class StreamPlatformDetail(APIView):
                 {'error': 'Stream platform not found'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        serializer = StreamPlatformSerializer(platform, context={'request': request})
+        serializer = StreamPlatformSerializer(platform)
         return Response(serializer.data)
     
     def put(self, request, pk):
@@ -115,4 +115,60 @@ class WatchDetail(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
         watchlist.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ReviewList(APIView):
+    
+    def get(self, request):
+        reviews = Review.objects.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+class ReviewDetail(APIView):
+    
+    def get(self, request, pk):
+        try:
+            review = Review.objects.get(pk=pk)
+        except Review.DoesNotExist:
+            return Response(
+                {'error': 'Review not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        try:
+            review = Review.objects.get(pk=pk)
+        except Review.DoesNotExist:
+            return Response(
+                {'error': 'Review not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = ReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        
+    def delete(self, request, pk): 
+        try:
+            review = Review.objects.get(pk=pk)
+        except Review.DoesNotExist:
+            return Response(
+                {'error': 'Review not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
