@@ -9,7 +9,7 @@ urlpatterns = [
     path('list/', WatchListView.as_view(), name='watch-list'),
     path('list/<int:pk>', WatchDetail.as_view(), name='watch-detail'),
     
-    path('', include(router.urls) ),
+    path('', include(router.urls)),
     # path('stream/', StreamPlatformList.as_view(), name='streamplatform-list'),
     # path('stream/<int:pk>', StreamPlatformDetail.as_view(), name='streamplatform-detail'),
     
