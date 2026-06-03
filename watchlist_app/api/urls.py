@@ -1,14 +1,16 @@
 from django.urls import path
-from watchlist_app.api.views import StreamPlatformDetail, StreamPlatformList, WatchDetail, WatchListView, ReviewList, ReviewDetail
+from watchlist_app.api.views import StreamPlatformDetail, StreamPlatformList, WatchDetail, WatchListView, ReviewList, ReviewDetail, ReviewCreate
 
 urlpatterns = [
     path('list/', WatchListView.as_view(), name='watch-list'),
     path('list/<int:pk>', WatchDetail.as_view(), name='watch-detail'),
-    path('streams/', StreamPlatformList.as_view(), name='streamplatform-list'),
-    path('streams/<int:pk>', StreamPlatformDetail.as_view(), name='streamplatform-detail'),
-    path('reviews/', ReviewList.as_view(), name='review-list'),
-    path('reviews/<int:pk>', ReviewDetail.as_view(), name='review-detail'),
+    path('stream/', StreamPlatformList.as_view(), name='streamplatform-list'),
+    path('stream/<int:pk>', StreamPlatformDetail.as_view(), name='streamplatform-detail'),
     
-    # path('streams/<int:pk>/review', StreamPlatformDetail.as_view(), name='streamplatform-detail'),
-    # path('streams/review/<int:pk>', ReviewDetail.as_view(), name='review-detail'),
+    # path('reviews/', ReviewList.as_view(), name='review-list'),
+    # path('reviews/<int:pk>', ReviewDetail.as_view(), name='review-detail'),
+    
+    path('stream/<int:pk>/review-create', ReviewCreate.as_view(), name='review-create'),
+    path('stream/<int:pk>/review', ReviewList.as_view(), name='review-list'),
+    path('stream/review/<int:pk>', ReviewDetail.as_view(), name='review-detail'),
 ]
