@@ -7,7 +7,7 @@ router.register('stream', StreamPlatformViewSet, basename='streamplatform')
 
 urlpatterns = [
     path('list/', WatchListView.as_view(), name='watch-list'),
-    path('list/<int:pk>', WatchDetail.as_view(), name='watch-detail'),
+    path('<int:pk>/', WatchDetail.as_view(), name='watch-detail'),
     
     path('', include(router.urls)),
     # path('stream/', StreamPlatformList.as_view(), name='streamplatform-list'),
@@ -16,7 +16,7 @@ urlpatterns = [
     # path('reviews/', ReviewList.as_view(), name='review-list'),
     # path('reviews/<int:pk>', ReviewDetail.as_view(), name='review-detail'),
     
-    path('stream/<int:pk>/review-create', ReviewCreate.as_view(), name='review-create'),
-    path('stream/<int:pk>/review', ReviewList.as_view(), name='review-list'),
-    path('stream/review/<int:pk>', ReviewDetail.as_view(), name='review-detail'),
+    path('<int:pk>/review-create', ReviewCreate.as_view(), name='review-create'),
+    path('<int:pk>/review', ReviewList.as_view(), name='review-list'),
+    path('review/<int:pk>', ReviewDetail.as_view(), name='review-detail'),
 ]
