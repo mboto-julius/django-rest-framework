@@ -34,7 +34,7 @@ class ReviewCreate(generics.CreateAPIView):
         serializer.save(watchlist=watchlist, reviewer=reviewer)
 
 class ReviewList(generics.ListAPIView):
-    serializer_class = ReviewSerializer
+    serializer_class = ReviewSerializer 
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
